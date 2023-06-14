@@ -9,7 +9,7 @@ import (
 	"log"
 )
 
-var username = "" // Twitch channel here
+var username = "" // Twitch channel here. Example: enkk
 
 func main() {
 
@@ -29,7 +29,6 @@ func main() {
 		if err != nil {
 			log.Fatal("failed to write messages:", err)
 		}
-
 	})
 
 	client.Join(username)

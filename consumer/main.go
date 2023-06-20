@@ -5,14 +5,15 @@ import (
 	"fmt"
 	"github.com/segmentio/kafka-go"
 	"log"
+	"os"
 )
 
 func main() {
-	username := "ibai" // Twitch channel here. Example: enkk
+	var username = os.Getenv("CHANNEL") // Twitch channel here. Example: enkk
 	partition := 0
 
 	r := kafka.NewReader(kafka.ReaderConfig{
-		Brokers:   []string{"localhost:9092"},
+		Brokers:   []string{"kafka:9092"},
 		Topic:     username,
 		Partition: partition,
 		MaxBytes:  10e6, // 10MB

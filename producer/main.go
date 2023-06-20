@@ -6,14 +6,14 @@ import (
 	"github.com/gempir/go-twitch-irc/v4"
 	_ "github.com/lib/pq"
 	"github.com/segmentio/kafka-go"
-	"log"
+	"os"
 )
 
-var username = "" // Twitch channel here. Example: enkk
-
 func main() {
-
+	var username = os.Getenv("CHANNEL")
 	var conn = initializeKafka(username)
+
+	defer conn.Close()
 
 	client := twitch.NewAnonymousClient()
 	client.OnConnect(func() {
@@ -23,11 +23,12 @@ func main() {
 	client.OnPrivateMessage(func(message twitch.PrivateMessage) {
 		fmt.Println(message.Message)
 
-		_, err := conn.WriteMessages(
-			kafka.Message{Value: []byte(message.Message)},
-		)
+		msg := kafka.Message{
+			Value: []byte(fmt.Sprint(message.Message)),
+		}
+		err := conn.WriteMessages(context.Background(), msg)
 		if err != nil {
-			log.Fatal("failed to write messages:", err)
+			fmt.Println(err)
 		}
 	})
 
@@ -38,16 +39,8 @@ func main() {
 	}
 }
 
-func initializeKafka(topic string) *kafka.Conn {
-
-	partition := 0
-
-	conn, err := kafka.DialLeader(context.Background(), "tcp", "localhost:9092", topic, partition)
-	if err != nil {
-		log.Fatal("failed to dial leader:", err)
+func initializeKafka(topic string) *kafka.Writer {
+	return &kafka.Writer{
+		Addr: kafka.TCP("kakfa:9092"),
 	}
-
-	println("Connected to Kafka.")
-
-	return conn
 }

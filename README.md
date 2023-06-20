@@ -4,26 +4,9 @@ This project is a personal endeavor aimed at learning Go programming language an
 
 ## Getting Started
 
-To set up and run the project, follow these instructions:
-
-1. Start Zookeeper:
+To set up and run the project, just start the composition:
    ```bash
-   zkServer start
-   ```
-
-2. Start Kafka Server. I use:
-   ```bash
-   ./kafka-server-start /opt/homebrew/etc/kafka/server.properties
-   ```
-
-3. Start the Producer:
-   ```bash
-   go run producer/main.go
-   ```
-
-4. Start the Consumer:
-   ```bash
-   go run consumer/main.go
+   docker compose up
    ```
 
 ## Contributing

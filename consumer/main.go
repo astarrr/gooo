@@ -4,30 +4,29 @@ import (
 	"context"
 	"fmt"
 	"github.com/segmentio/kafka-go"
-	"log"
 	"os"
+	"strings"
 )
 
 func main() {
 	var username = os.Getenv("CHANNEL") // Twitch channel here. Example: enkk
-	partition := 0
 
-	r := kafka.NewReader(kafka.ReaderConfig{
-		Brokers:   []string{"kafka:9092"},
-		Topic:     username,
-		Partition: partition,
-		MaxBytes:  10e6, // 10MB
-	})
+	r := getKafkaReader("kafka:9092", username)
+	fmt.Println("Connected to Kafka...")
+	defer r.Close()
 
 	for {
-		m, err := r.ReadMessage(context.Background())
-		if err != nil {
-			break
-		}
+		m, _ := r.ReadMessage(context.Background())
 		fmt.Println(string(m.Value))
 	}
+}
 
-	if err := r.Close(); err != nil {
-		log.Fatal("failed to close reader:", err)
-	}
+func getKafkaReader(kafkaURL, topic string) *kafka.Reader {
+	brokers := strings.Split(kafkaURL, ",")
+	return kafka.NewReader(kafka.ReaderConfig{
+		Brokers:  brokers,
+		Topic:    topic,
+		MinBytes: 10e1,
+		MaxBytes: 10e6,
+	})
 }

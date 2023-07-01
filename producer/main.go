@@ -41,6 +41,7 @@ func main() {
 
 func initializeKafka(topic string) *kafka.Writer {
 	return &kafka.Writer{
-		Addr: kafka.TCP("kakfa:9092"),
+		Addr:  kafka.TCP("kafka:9092"),
+		Topic: topic,
 	}
 }

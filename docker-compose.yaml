@@ -30,7 +30,7 @@ services:
       - kafka
   consumer:
     build:
-      context: consumer
+      context: consumers/go
     environment:
       CHANNEL: "" # Twitch channel here. Example: enkk
     depends_on:

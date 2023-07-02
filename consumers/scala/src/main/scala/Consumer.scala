@@ -7,8 +7,8 @@ import scala.util.control.Exception
 
 object Consumer {
   def main(args: Array[String]): Unit = {
-    val brokers = "localhost:29092"
-    val topic = ""
+    val brokers = "kafka:9092"
+    val topic = sys.env("CHANNEL")
 
     val props = new Properties()
     props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers)

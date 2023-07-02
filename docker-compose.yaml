@@ -25,13 +25,20 @@ services:
     build:
       context: producer
     environment:
-      CHANNEL: "" # Twitch channel here. Example: enkk
+      CHANNEL: # Twitch channel here. Example: enkk
     depends_on:
       - kafka
-  consumer:
+  consumer-go:
     build:
       context: consumers/go
     environment:
-      CHANNEL: "" # Twitch channel here. Example: enkk
+      CHANNEL: # Twitch channel here. Example: enkk
+    depends_on:
+      - kafka
+  consumer-scala:
+    build:
+      context: consumers/scala
+    environment:
+      CHANNEL: # Twitch channel here. Example: enkk
     depends_on:
       - kafka

@@ -35,6 +35,5 @@ object Consumer {
     finally {
       consumer.close()
     }
-
   }
 }

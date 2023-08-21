@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	var username = os.Getenv("CHANNEL") // Twitch channel here. Example: enkk
+	var username = os.Getenv("CHANNEL")
 
 	r := getKafkaReader("kafka:9092", username)
 	fmt.Println("Connected to Kafka...")
